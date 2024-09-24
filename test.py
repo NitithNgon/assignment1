@@ -56,8 +56,8 @@ axs[1].legend(list(map(str, [1,2])),bbox_to_anchor=(1.01, 0.75), loc='upper left
 plt.show()
 
 
-
-fig, axs = plt.subplots(4, 1, figsize=(16, 8), gridspec_kw={'height_ratios': [1, 1, 1, 1]})
+# plot Axle
+fig, axs = plt.subplots(4, 1, figsize=(12, 8), gridspec_kw={'height_ratios': [1, 1, 1, 1]})
 fig.tight_layout(pad=1)
 flip_axle_cm = min_top_flatline_ax - axle_cm
 topgraph_flip_axle_cm = max([ max(flip_axle_cm[:,i]) for i in range(2)])
@@ -66,11 +66,12 @@ axs[0].set_ylim(0, topgraph_flip_axle_cm )
 axs[0].set_yticks(np.arange(0, topgraph_flip_axle_cm, step=250))
 
 time_range= [range(0, flip_axle_cm.shape[0])]
+
 # plot two Axle
 # axs[1].scatter(np.full_like(flip_axle_cm, np.transpose(time_range)),flip_axle_cm)
+
 # plot one AXle
 axs[1].scatter(np.transpose(time_range),flip_axle_cm[:,1])
-
 
 # distribution curve
 normal_distribution = np.sort(flip_axle_cm, axis=0)
@@ -81,11 +82,54 @@ print(mean,sd)
 axs[2].plot(a[a>5] , norm.pdf(a[a>5], mean, sd)) 
 
 # histogram
-# axs[3].hist(a[a>5], bins=25, density=True, alpha=0.6, color='b')
+axs[3].hist(a[a>5], bins=25, density=True, alpha=0.6, color='b')
+
+plt.show()
+
+
+
+
 
 # plot peak
-b=flip_axle_cm[:,1]
-peaks, properties = find_peaks(b, prominence=(400, None))
-axs[3].plot(b)
-axs[3].plot(peaks, b[peaks], "x")
+fig, axs = plt.subplots(2, 1, figsize=(12, 8), gridspec_kw={'height_ratios': [1, 1]})
+fig.tight_layout(pad=1)
+
+
+
+# plot peak Ax1
+Ax1=flip_axle_cm[:,0]
+axs[0].plot(Ax1, color = "C0")
+
+# bad condition
+bad_event_Ax1_peak, properties_bad_event_Ax1_peak = find_peaks(Ax1, prominence=(400, None))
+axs[0].plot(bad_event_Ax1_peak, Ax1[bad_event_Ax1_peak], "x", color = "C2")
+
+# wheel condition
+wheel_Ax1_peaks, wheel_bad_event_Ax1_peak = find_peaks(Ax1, width=20, distance=30)
+axs[0].plot(wheel_Ax1_peaks, Ax1[wheel_Ax1_peaks], "x", color = "C1")
+axs[0].vlines(x=wheel_Ax1_peaks, ymin=Ax1[wheel_Ax1_peaks] - wheel_bad_event_Ax1_peak["prominences"],
+            ymax = Ax1[wheel_Ax1_peaks], color = "C1")
+axs[0].hlines(y=wheel_bad_event_Ax1_peak["width_heights"], xmin=wheel_bad_event_Ax1_peak["left_ips"],
+            xmax=wheel_bad_event_Ax1_peak["right_ips"], color = "C1")
+axs[0].hlines(y=100, xmin=(wheel_bad_event_Ax1_peak["left_ips"])[0],
+            xmax=(wheel_bad_event_Ax1_peak["right_ips"])[-1], color = "C3")
+
+
+# plot peak Ax2
+Ax2=flip_axle_cm[:,1]
+axs[1].plot(Ax2, color = "C0")
+
+# bad condition
+bad_event_Ax2_peak, properties_bad_event_Ax2_peak = find_peaks(Ax2, prominence=(400, None))
+axs[1].plot(bad_event_Ax2_peak, Ax2[bad_event_Ax2_peak], "x", color = "C2")
+
+# wheel condition
+wheel_Ax2_peaks, wheel_bad_event_Ax2_peak = find_peaks(Ax2, width=20, distance=30)
+axs[1].plot(wheel_Ax2_peaks, Ax2[wheel_Ax2_peaks], "x", color = "C1")
+axs[1].vlines(x=wheel_Ax2_peaks, ymin=Ax2[wheel_Ax2_peaks] - wheel_bad_event_Ax2_peak["prominences"],
+            ymax = Ax2[wheel_Ax2_peaks], color = "C1")
+axs[1].hlines(y=wheel_bad_event_Ax2_peak["width_heights"], xmin=wheel_bad_event_Ax2_peak["left_ips"],
+            xmax=wheel_bad_event_Ax2_peak["right_ips"], color = "C1")
+axs[1].hlines(y=100, xmin=(wheel_bad_event_Ax2_peak["left_ips"])[0],
+            xmax=(wheel_bad_event_Ax2_peak["right_ips"])[-1], color = "C3")
 plt.show()
