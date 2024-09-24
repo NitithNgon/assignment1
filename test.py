@@ -1,8 +1,9 @@
 import os
 import numpy as np
 import matplotlib.pyplot as plt
-
-
+from scipy.stats import norm 
+import statistics 
+from scipy.signal import find_peaks
 
 # print("current working directory:", os.getcwd())
 # loop read event
@@ -56,7 +57,7 @@ plt.show()
 
 
 
-fig, axs = plt.subplots(1, 2, figsize=(16, 4), gridspec_kw={'width_ratios': [1, 1]})
+fig, axs = plt.subplots(4, 1, figsize=(16, 8), gridspec_kw={'height_ratios': [1, 1, 1, 1]})
 fig.tight_layout(pad=1)
 flip_axle_cm = min_top_flatline_ax - axle_cm
 topgraph_flip_axle_cm = max([ max(flip_axle_cm[:,i]) for i in range(2)])
@@ -64,10 +65,27 @@ axs[0].plot(flip_axle_cm)
 axs[0].set_ylim(0, topgraph_flip_axle_cm )
 axs[0].set_yticks(np.arange(0, topgraph_flip_axle_cm, step=250))
 
-np.diag()
 time_range= [range(0, flip_axle_cm.shape[0])]
-axs[1].scatter(np.full_like(flip_axle_cm, np.transpose(time_range)),flip_axle_cm)
+# plot two Axle
+# axs[1].scatter(np.full_like(flip_axle_cm, np.transpose(time_range)),flip_axle_cm)
+# plot one AXle
+axs[1].scatter(np.transpose(time_range),flip_axle_cm[:,1])
 
 
+# distribution curve
+normal_distribution = np.sort(flip_axle_cm, axis=0)
+a=normal_distribution[:,1]
+mean = statistics.mean(a[a>5])  # no need to sort
+sd = statistics.stdev(a[a>5])   # no need to sort
+print(mean,sd)
+axs[2].plot(a[a>5] , norm.pdf(a[a>5], mean, sd)) 
 
+# histogram
+# axs[3].hist(a[a>5], bins=25, density=True, alpha=0.6, color='b')
+
+# plot peak
+b=flip_axle_cm[:,1]
+peaks, properties = find_peaks(b, prominence=(400, None))
+axs[3].plot(b)
+axs[3].plot(peaks, b[peaks], "x")
 plt.show()
