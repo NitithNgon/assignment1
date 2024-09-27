@@ -81,7 +81,7 @@ def classify_peaks_bad_events(flip_axle_cm: np.ndarray, file_path: str) :
     axs[1].set_title("AX2")
     axs[1].plot(Ax2, "+", color = "C3")
     # bad condition
-    bad_event_Ax2_peak, properties_bad_event_Ax2_peak = find_peaks(Ax2, prominence=(400, None),width=(None, 15))
+    bad_event_Ax2_peak, properties_bad_event_Ax2_peak = find_peaks(Ax2, prominence=(50, None),width=(None, 15))
     print(properties_bad_event_Ax2_peak)
     axs[1].plot(bad_event_Ax2_peak, Ax2[bad_event_Ax2_peak], "x", color = "C2")
     # Ax2[bad_event_Ax2_peak]=False
@@ -99,7 +99,7 @@ def classify_peaks_bad_events(flip_axle_cm: np.ndarray, file_path: str) :
     # Ax2[bad_event_Ax2_peak]=False
 
     # wheel condition
-    wheel_Ax2_peaks, wheel_bad_event_Ax2_peak = find_peaks(Ax2, prominence=(100, 600), width=20, distance=30)
+    wheel_Ax2_peaks, wheel_bad_event_Ax2_peak = find_peaks(Ax2, prominence=(100, 800), width=(30, 150), distance=20)
     axs[1].plot(wheel_Ax2_peaks, Ax2[wheel_Ax2_peaks], "x", color = "C1")
     axs[1].vlines(x=wheel_Ax2_peaks, ymin=Ax2[wheel_Ax2_peaks] - wheel_bad_event_Ax2_peak["prominences"],
                 ymax = Ax2[wheel_Ax2_peaks], color = "C1")
