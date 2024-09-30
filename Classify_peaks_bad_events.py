@@ -2,7 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from scipy.stats import norm 
 import statistics 
-from scipy.signal import find_peaks
+from scipy.signal import find_peaks, peak_widths
 from math import floor
 from math import ceil
 
@@ -81,9 +81,11 @@ def classify_peaks_bad_events(flip_axle_cm: np.ndarray, file_path: str) :
     axs[1].set_title("AX2")
     axs[1].plot(Ax2, "+", color = "C3")
     # bad condition
-    bad_event_Ax2_peak, properties_bad_event_Ax2_peak = find_peaks(Ax2, prominence=(50, None),width=(None, 15))
+    bad_event_Ax2_peak, properties_bad_event_Ax2_peak = find_peaks(Ax2, prominence=(50, None), width=(None, 15))
     print(properties_bad_event_Ax2_peak)
     axs[1].plot(bad_event_Ax2_peak, Ax2[bad_event_Ax2_peak], "x", color = "C2")
+    # axs[1].vlines(x=bad_event_Ax2_peak, ymin=Ax2[bad_event_Ax2_peak] - 1*properties_bad_event_Ax2_peak["prominences"],
+    #             ymax = Ax2[bad_event_Ax2_peak], color = "C2")
     # Ax2[bad_event_Ax2_peak]=False
     
     # Ax2[bad_event_Ax2_peak]=Ax2[bad_event_Ax2_peak]-properties_bad_event_Ax2_peak["prominences"]
@@ -94,21 +96,29 @@ def classify_peaks_bad_events(flip_axle_cm: np.ndarray, file_path: str) :
         else :    
             shift_down_range[:]= Ax2[bad_event_Ax2_peak][i]-properties_bad_event_Ax2_peak["prominences"][i]
 
-
+    
     # bad_event_Ax2_peak, properties_bad_event_Ax2_peak = find_peaks(Ax2, prominence=(400, None),width=(None, 7))
     # Ax2[bad_event_Ax2_peak]=False
 
     # wheel condition
-    wheel_Ax2_peaks, wheel_bad_event_Ax2_peak = find_peaks(Ax2, prominence=(100, 800), width=(30, 150), distance=20)
+    # peaks, properties = find_peaks(Ax2)
+    # noise_peak = peak_widths(Ax2, peaks, rel_height=0.5)
+    # for i in range(len(noise_peak)):
+    #     shift_down_range=Ax2[(floor(noise_peak["left_ips"][i])):ceil(noise_peak["right_ips"][i])]
+    #     if Ax2[peaks][i]-min(shift_down_range) < properties["prominences"][i]:
+    #         shift_down_range[:]=  min(shift_down_range)
+    #     else :    
+    #         shift_down_range[:]= Ax2[bad_event_Ax2_peak][i]-properties_bad_event_Ax2_peak["prominences"][i]
+    wheel_Ax2_peaks, properties_wheel_bad_event_Ax2_peak = find_peaks(Ax2, prominence=(100, 800), width=(30, 150), distance=20)
     axs[1].plot(wheel_Ax2_peaks, Ax2[wheel_Ax2_peaks], "x", color = "C1")
-    axs[1].vlines(x=wheel_Ax2_peaks, ymin=Ax2[wheel_Ax2_peaks] - wheel_bad_event_Ax2_peak["prominences"],
+    axs[1].vlines(x=wheel_Ax2_peaks, ymin=Ax2[wheel_Ax2_peaks] - properties_wheel_bad_event_Ax2_peak["prominences"],
                 ymax = Ax2[wheel_Ax2_peaks], color = "C1")
-    axs[1].hlines(y=wheel_bad_event_Ax2_peak["width_heights"], xmin=wheel_bad_event_Ax2_peak["left_ips"],
-                xmax=wheel_bad_event_Ax2_peak["right_ips"], color = "C1")
+    axs[1].hlines(y=properties_wheel_bad_event_Ax2_peak["width_heights"], xmin=properties_wheel_bad_event_Ax2_peak["left_ips"],
+                xmax=properties_wheel_bad_event_Ax2_peak["right_ips"], color = "C1")
     
     try:
-        axs[1].hlines(y=100, xmin=(wheel_bad_event_Ax2_peak["left_ips"])[0],
-                    xmax=(wheel_bad_event_Ax2_peak["right_ips"])[-1], color = "C3")
+        axs[1].hlines(y=properties_wheel_bad_event_Ax2_peak["width_heights"].mean() -15, xmin=(properties_wheel_bad_event_Ax2_peak["left_ips"])[0],
+                    xmax=(properties_wheel_bad_event_Ax2_peak["right_ips"])[-1], color = "C3")
     except Exception as e:
         print('Error = ', e)
     axs[1].plot(Ax2, color = "C0")
