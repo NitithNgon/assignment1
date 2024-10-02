@@ -54,7 +54,7 @@ axs[0].legend(list(map(str, full_u_v_exact_channel_list)),bbox_to_anchor=(1.01, 
 axs[1].plot(axle_cm)
 axs[1].set_ylim(0, min_top_flatline_ax )
 axs[1].set_yticks(np.arange(0, min_top_flatline_ax, step=250))
-axs[1].set_ylabel('axle_cm')
+axs[1].set_ylabel('axle_cm.')
 axs[1].legend(list(map(str, [1,2])),bbox_to_anchor=(1.01, 0.75), loc='upper left')
 plt.show()
 
