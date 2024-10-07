@@ -34,8 +34,12 @@ def classify_peaks_bad_events_Ax( Ax: np.ndarray, axs: np.ndarray[plt.Axes], axs
     try:
         axs[axs_num].hlines(y=properties_wheel_bad_event_Ax_peak["width_heights"].mean() -15, xmin=(properties_wheel_bad_event_Ax_peak["left_ips"])[0],
                     xmax=(properties_wheel_bad_event_Ax_peak["right_ips"])[-1], color = "C3")
-    except Exception as e:
-        print('Error = ', e)
+    except :
+        pass
+    # except Exception as e:
+    #     print('Error = ', e)
+
+
     axs[axs_num].plot(Ax, color = "C0")
 
     return num_of_bad_event_peaks + num_of_bad_event_above_wheel_peaks

@@ -1,7 +1,7 @@
 import numpy as np
 from typing import List
 
-def read_event_data(event_address:List[str] =[], event_nd_data:List[str] =[], file_path:str ="" ) -> np.ndarray | List[str] | List[str] | List[np.ndarray]:
+def read_event_data( file_path:str ="" ) -> np.ndarray | List[str]:
 
     signal_array = np.genfromtxt(file_path, delimiter="\t", skip_header=2, skip_footer=1)
 
@@ -18,7 +18,4 @@ def read_event_data(event_address:List[str] =[], event_nd_data:List[str] =[], fi
     flip_axle_cm = min_top_flatline_ax - axle_cm
     path_component_list=[event_type, event_number, axle_cm_lane_key]
 
-    # no use
-    event_address.append(file_path)
-    event_nd_data.append(flip_axle_cm)
-    return flip_axle_cm, path_component_list, event_address, event_nd_data
+    return flip_axle_cm, path_component_list
