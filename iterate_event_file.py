@@ -3,14 +3,12 @@ import numpy as np
 from typing import List
 from read_event_data import *
 from classify_peaks_bad_events import *
-from animation import *
 
 initial_collect_peaks_results_dict ={"bad_events":[],"bad_events_dirtyAX":[],"bad_events_raining":[],"good_events":[]}
 
 # use recursive function.
 def iterate_event_file(superfolder_path: str, collect_peaks_results_dict: dict[str, List[int]] =initial_collect_peaks_results_dict) -> dict[str, List[int]]:
     # serching event.text directory
-    animate()
     for folder in os.listdir(superfolder_path):
         current_sub_event_location = os.path.join(superfolder_path, folder)
         if "event.txt" in os.listdir(current_sub_event_location):
