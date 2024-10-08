@@ -5,7 +5,7 @@ from classify_peaks_bad_events_Ax import *
 
 from typing import List
 
-def classify_peaks_bad_events(flip_axle_cm: np.ndarray, file_path: str, path_component_list: List[str] , collect_peaks_results_dict: dict[str, List[int]]) -> dict[str, List[int]]:
+def classify_peaks_bad_events(flip_axle_cm: np.ndarray, file_path: str, path_component_list: List[str] , collect_peaks_results_dict: dict[str, List[float]]) -> dict[str, List[float]]:
     event_type = path_component_list[0]
     event_number =path_component_list[1]
     data_tag = path_component_list[0]+" | "+path_component_list[1]
@@ -23,7 +23,7 @@ def classify_peaks_bad_events(flip_axle_cm: np.ndarray, file_path: str, path_com
         # plot peak Ax0
         axs[0].set_title("Ax"+axle_cm_name_channel_list[axle_cm_lane_key][0])
         num_of_all_bad_event_peaks_Ax0 = classify_peaks_bad_events_Ax(Ax0, axs, 0)
-        collect_peaks_results_dict[event_type].append(num_of_all_bad_event_peaks_Ax0)
+        collect_peaks_results_dict[event_type].append(num_of_all_bad_event_peaks_Ax0/len(Ax0))
 
     
     Ax1=flip_axle_cm[:,1]
@@ -32,7 +32,7 @@ def classify_peaks_bad_events(flip_axle_cm: np.ndarray, file_path: str, path_com
         # plot peak Ax1
         axs[1].set_title("Ax"+axle_cm_name_channel_list[axle_cm_lane_key][1])
         num_of_all_bad_event_peaks_Ax1 = classify_peaks_bad_events_Ax(Ax1, axs, 1)
-        collect_peaks_results_dict[event_type].append(num_of_all_bad_event_peaks_Ax1)
+        collect_peaks_results_dict[event_type].append(num_of_all_bad_event_peaks_Ax1/len(Ax1))
 
     # plt.show()
     new_fig_name = f'plotclassif_{event_number}.png'

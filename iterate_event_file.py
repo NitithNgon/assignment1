@@ -7,7 +7,7 @@ from classify_peaks_bad_events import *
 initial_collect_peaks_results_dict ={"bad_events":[],"bad_events_dirtyAX":[],"bad_events_raining":[],"good_events":[]}
 
 # use recursive function.
-def iterate_event_file(superfolder_path: str, collect_peaks_results_dict: dict[str, List[int]] =initial_collect_peaks_results_dict) -> dict[str, List[int]]:
+def iterate_event_file(superfolder_path: str, collect_peaks_results_dict: dict[str, List[float]] =initial_collect_peaks_results_dict) -> dict[str, List[float]]:
     # serching event.text directory
     for folder in os.listdir(superfolder_path):
         current_sub_event_location = os.path.join(superfolder_path, folder)
