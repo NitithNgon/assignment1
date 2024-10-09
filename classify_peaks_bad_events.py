@@ -21,23 +21,25 @@ def classify_peaks_bad_events(flip_axle_cm: np.ndarray, file_path: str, path_com
     if  error_signal_check(Ax0) : Ax0_classified_type = "bad_events_signal_error"
     else :
         # plot peak Ax0
-        axs[0].set_title("Ax"+axle_cm_name_channel_list[axle_cm_lane_key][0])
         num_of_all_bad_event_peaks_Ax0 = classify_peaks_bad_events_Ax(Ax0, axs, 0)
-        collect_peaks_results_dict[event_type].append(num_of_all_bad_event_peaks_Ax0/len(Ax0))
+        bad_event_peaks_density_Ax0 = num_of_all_bad_event_peaks_Ax0/len(Ax0)
+        axs[0].set_title("Ax"+axle_cm_name_channel_list[axle_cm_lane_key][0]+" density:"+str(round(bad_event_peaks_density_Ax0*10000, 2))+" E-4")
+        collect_peaks_results_dict[event_type].append(bad_event_peaks_density_Ax0)
 
     
     Ax1=flip_axle_cm[:,1]
     if  error_signal_check(Ax1) : Ax1_classified_type = "bad_events_signal_error"
     else :
         # plot peak Ax1
-        axs[1].set_title("Ax"+axle_cm_name_channel_list[axle_cm_lane_key][1])
         num_of_all_bad_event_peaks_Ax1 = classify_peaks_bad_events_Ax(Ax1, axs, 1)
-        collect_peaks_results_dict[event_type].append(num_of_all_bad_event_peaks_Ax1/len(Ax1))
+        bad_event_peaks_density_Ax1 = num_of_all_bad_event_peaks_Ax1/len(Ax1)
+        axs[1].set_title("Ax"+axle_cm_name_channel_list[axle_cm_lane_key][1]+" density:"+str(round(bad_event_peaks_density_Ax1*10000, 2))+" E-4")
+        collect_peaks_results_dict[event_type].append(bad_event_peaks_density_Ax1)
 
     # plt.show()
-    new_fig_name = f'plotclassif_{event_number}.png'
-    fig.savefig(file_path.replace("event.txt",new_fig_name))
-    fig.savefig(f'classify_peaks_bad_events_Ax_results/{event_type}/{new_fig_name}')
+    # new_fig_name = f'plotclassif_{event_number}.png'
+    # fig.savefig(file_path.replace("event.txt",new_fig_name))
+    # fig.savefig(f'classify_peaks_bad_events_Ax_results/{event_type}/{new_fig_name}')
     plt.close(fig) 
     return collect_peaks_results_dict
 
