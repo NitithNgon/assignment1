@@ -9,6 +9,7 @@ scipy = "*"
 pandas = "*"
 matplotlib = "*"
 pipenv = "*"
+scikit-fuzzy = "*"
 
 [dev-packages]
 
