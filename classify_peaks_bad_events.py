@@ -36,11 +36,11 @@ def classify_peaks_bad_events(flip_axle_cm: np.ndarray, file_path: str, path_com
         axs[1].set_title("Ax"+axle_cm_name_channel_list[axle_cm_lane_key][1]+" density:"+str(round(bad_event_peaks_density_Ax1*10000, 2))+" E-4")
         collect_peaks_results_dict[event_type].append(bad_event_peaks_density_Ax1)
 
-    # plt.show()
+    plt.show()
     # new_fig_name = f'plotclassif_{event_number}.png'
     # fig.savefig(file_path.replace("event.txt",new_fig_name))
     # fig.savefig(f'classify_peaks_bad_events_Ax_results/{event_type}/{new_fig_name}')
-    plt.close(fig) 
+    # plt.close(fig) 
     return collect_peaks_results_dict
 
 
