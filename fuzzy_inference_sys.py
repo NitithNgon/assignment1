@@ -11,8 +11,8 @@ def fuzzy_inference_sys(Ax0_peak_densty: float, Ax1_peak_densty: float):
     # member ship func
     bad_events = mf.trapmf(x_peak_densty,[-10,-10,-2,-1])
     good_events = mf.pimf(x_peak_densty,-1,0,20,30)
-    bad_events_raining = mf.pimf(x_peak_densty,20,90,510,1653)
-    bad_events_dirtyAX = mf.smf(x_peak_densty,193,530)
+    bad_events_raining = mf.pimf(x_peak_densty,20,90,510,1650)
+    bad_events_dirtyAX = mf.smf(x_peak_densty,310,990) #530
 
     # fuzzificaton
 
@@ -23,13 +23,14 @@ def fuzzy_inference_sys(Ax0_peak_densty: float, Ax1_peak_densty: float):
 
 
 
-    fig, ax0 = plt.subplots(nrows = 1, figsize =(10, 25))
+    fig, ax0 = plt.subplots(nrows = 1, figsize =(20, 8))
 
     ax0.plot(x_peak_densty, bad_events, 'g', linewidth = 2, label = 'bad_events')
     ax0.plot(x_peak_densty, good_events, 'r', linewidth = 2, label = 'good_events')
     ax0.plot(x_peak_densty, bad_events_raining, 'g', linewidth = 2, label = 'bad_events_raining')
     ax0.plot(x_peak_densty, bad_events_dirtyAX, 'b', linewidth = 2, label = 'bad_events_dirtyAX')
-    ax0.set_title('age')
+    ax0.set_xticks(np.arange(-50, 2001, step=50))
+    ax0.set_title('member ship func')
     ax0.legend()
     plt.tight_layout()
     plt.show()
