@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 from typing import List
 
 def events_situation(Ax0_fit_good_events, Ax0_fit_bad_events_raining, Ax0_fit_bad_events_dirtyAX, Ax0_fit_bad_events, Ax1_fit_good_events, Ax1_fit_bad_events_raining, Ax1_fit_bad_events_dirtyAX, Ax1_fit_bad_events) -> List:
-    
+    print("")
 
 def fuzzy_inference_sys(Ax0_peak_densty: float, Ax1_peak_densty: float):
     x_peak_densty = np.arange(-10, 2001, 1)
