@@ -35,7 +35,7 @@ def fuzzy_inference_sys(Ax0_peak_densty: float, Ax1_peak_densty: float):
 
     ax0.plot(x_peak_densty, bad_events, 'g', linewidth = 2, label = 'bad_events')
     ax0.plot(x_peak_densty, good_events, 'r', linewidth = 2, label = 'good_events')
-    ax0.plot(x_peak_densty, bad_events_raining, 'g', linewidth = 2, label = 'bad_events_raining')
+    ax0.plot(x_peak_densty, bad_events_raining, 'm', linewidth = 2, label = 'bad_events_raining')
     ax0.plot(x_peak_densty, bad_events_dirtyAX, 'b', linewidth = 2, label = 'bad_events_dirtyAX')
     ax0.set_xticks(np.arange(-50, 2001, step=50))
     ax0.set_title('member ship func')
