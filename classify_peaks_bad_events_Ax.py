@@ -1,7 +1,10 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from scipy.signal import find_peaks
-from shift_down_bad_events import *
+from shift_down_bad_events import (
+    shift_down_bad_events,
+    RAIN_PROMINENCE
+)
 
 def classify_peaks_bad_events_Ax( Ax: np.ndarray, axs: np.ndarray[plt.Axes], axs_num: int) -> int:
 
@@ -11,7 +14,7 @@ def classify_peaks_bad_events_Ax( Ax: np.ndarray, axs: np.ndarray[plt.Axes], axs
     axs[axs_num].plot(Ax, "+", color = "C3")
 
     # bad condition
-    bad_event_Ax_peak, properties_bad_event_Ax_peak = find_peaks(Ax, prominence=(50, None), width=(None, 15))
+    bad_event_Ax_peak, properties_bad_event_Ax_peak = find_peaks(Ax, prominence=(RAIN_PROMINENCE, None), width=(None, 15))
     axs[axs_num].plot(bad_event_Ax_peak, Ax[bad_event_Ax_peak], "x", color = "C2")
 
     # print("shift_down_bad_events")
