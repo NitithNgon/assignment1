@@ -10,7 +10,7 @@ def fuzzy_inference_sys(Ax0_peak_densty: float, Ax1_peak_densty: float):
 
     # member ship func
     bad_events = mf.trapmf(x_peak_densty,[-10,-10,-2,-1])
-    good_events = mf.pimf(x_peak_densty,-1,0,20,30)
+    good_events = mf.pimf(x_peak_densty,-2,0,20,30)
     bad_events_raining = mf.pimf(x_peak_densty,20,90,510,1650)
     bad_events_dirtyAX = mf.smf(x_peak_densty,310,990)
     
@@ -25,13 +25,13 @@ def fuzzy_inference_sys(Ax0_peak_densty: float, Ax1_peak_densty: float):
     Ax0_fit_bad_events_raining, Ax1_fit_bad_events_raining = fuzz.interp_membership(x_peak_densty, bad_events_raining, Ax0_peak_densty), fuzz.interp_membership(x_peak_densty, bad_events_raining, Ax1_peak_densty)
     Ax0_fit_bad_events_dirtyAX, Ax1_fit_bad_events_dirtyAX = fuzz.interp_membership(x_peak_densty, bad_events_dirtyAX, Ax0_peak_densty), fuzz.interp_membership(x_peak_densty, bad_events_dirtyAX, Ax1_peak_densty)
     Ax0_fit_bad_events, Ax1_fit_bad_events = fuzz.interp_membership(x_peak_densty, bad_events, Ax0_peak_densty), fuzz.interp_membership(x_peak_densty, bad_events, Ax1_peak_densty)
-    print("Ax0_fit_good_events, Ax1_fit_good_events", Ax0_fit_good_events*100, Ax1_fit_good_events*100, "%")
-    print("Ax0_fit_bad_events_raining, Ax1_fit_bad_events_raining", Ax0_fit_bad_events_raining*100, Ax1_fit_bad_events_raining*100, "%")
-    print("Ax0_fit_bad_events_dirtyAX, Ax1_fit_bad_events_dirtyAX", Ax0_fit_bad_events_dirtyAX*100, Ax1_fit_bad_events_dirtyAX*100, "%")
-    print("Ax0_fit_bad_events, Ax1_fit_bad_events", Ax0_fit_bad_events*100, Ax1_fit_bad_events*100, "%")
+    print("Ax0_fit_good_events | Ax1_fit_good_events : ", Ax0_fit_good_events*100, "% | ", Ax1_fit_good_events*100, "%")
+    print("Ax0_fit_bad_events_raining | Ax1_fit_bad_events_raining : ", Ax0_fit_bad_events_raining*100, "% | ", Ax1_fit_bad_events_raining*100, "%")
+    print("Ax0_fit_bad_events_dirtyAX | Ax1_fit_bad_events_dirtyAX : ", Ax0_fit_bad_events_dirtyAX*100, "% | ", Ax1_fit_bad_events_dirtyAX*100, "%")
+    print("Ax0_fit_bad_events | Ax1_fit_bad_events : ", Ax0_fit_bad_events*100, "% | ", Ax1_fit_bad_events*100, "%")
 
 
-    fig, (ax0, ax1) = plt.subplots(nrows = 2, figsize =(20, 8))
+    fig, (ax0, ax1) = plt.subplots(nrows = 2, figsize =(15, 8))
 
     ax0.plot(x_peak_densty, bad_events, 'g', linewidth = 2, label = 'bad_events')
     ax0.plot(x_peak_densty, good_events, 'r', linewidth = 2, label = 'good_events')
@@ -93,7 +93,7 @@ def fuzzy_inference_sys(Ax0_peak_densty: float, Ax1_peak_densty: float):
     
     # defuzzification
     defuzzified  = fuzz.defuzz(y_durability, output_durability, 'centroid')
-    print("both_Axle_sensor_durability", defuzzified)
+    print("both_Axle_sensor_durability", defuzzified, "%") 
     result = fuzz.interp_membership(y_durability, output_durability, defuzzified)
     fig, ax0 = plt.subplots(figsize=(15, 8))
     ax0.plot(y_durability, durability_verylow, 'r', linewidth = 0.5, linestyle = '--')
