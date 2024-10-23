@@ -4,10 +4,13 @@ import skfuzzy.membership as mf
 import matplotlib.pyplot as plt
 from typing import List
 
-def events_situation(Ax0_fit_good_events, Ax0_fit_bad_events_raining, Ax0_fit_bad_events_dirtyAX, Ax0_fit_bad_events, Ax1_fit_good_events, Ax1_fit_bad_events_raining, Ax1_fit_bad_events_dirtyAX, Ax1_fit_bad_events) -> List:
-    print("")
+def events_situation(fuzzificaton_dict: dict) -> dict:
+    filtered_dict = dict(filter(lambda d: d[1]>0, fuzzificaton_dict.items()))
+    filtered_dict.update((x, float(round(y*100,2))) for x, y in filtered_dict.items())
+    sorted_by_values_dict = dict(sorted(filtered_dict.items(), key=lambda item: item[1] , reverse=True))
+    return sorted_by_values_dict
 
-def fuzzy_inference_sys(Ax0_peak_densty: float, Ax1_peak_densty: float):
+def fuzzy_inference_sys(Ax0_peak_densty: float, Ax1_peak_densty: float) -> List:
     x_peak_densty = np.arange(-10, 2001, 1)
     y_durability = np.arange(0, 109, 1)
 
@@ -28,10 +31,10 @@ def fuzzy_inference_sys(Ax0_peak_densty: float, Ax1_peak_densty: float):
     Ax0_fit_bad_events_raining, Ax1_fit_bad_events_raining = fuzz.interp_membership(x_peak_densty, bad_events_raining, Ax0_peak_densty), fuzz.interp_membership(x_peak_densty, bad_events_raining, Ax1_peak_densty)
     Ax0_fit_bad_events_dirtyAX, Ax1_fit_bad_events_dirtyAX = fuzz.interp_membership(x_peak_densty, bad_events_dirtyAX, Ax0_peak_densty), fuzz.interp_membership(x_peak_densty, bad_events_dirtyAX, Ax1_peak_densty)
     Ax0_fit_bad_events, Ax1_fit_bad_events = fuzz.interp_membership(x_peak_densty, bad_events, Ax0_peak_densty), fuzz.interp_membership(x_peak_densty, bad_events, Ax1_peak_densty)
-    print("Ax0_fit_good_events | Ax1_fit_good_events : ", Ax0_fit_good_events*100, "% | ", Ax1_fit_good_events*100, "%")
-    print("Ax0_fit_bad_events_raining | Ax1_fit_bad_events_raining : ", Ax0_fit_bad_events_raining*100, "% | ", Ax1_fit_bad_events_raining*100, "%")
-    print("Ax0_fit_bad_events_dirtyAX | Ax1_fit_bad_events_dirtyAX : ", Ax0_fit_bad_events_dirtyAX*100, "% | ", Ax1_fit_bad_events_dirtyAX*100, "%")
-    print("Ax0_fit_bad_events | Ax1_fit_bad_events : ", Ax0_fit_bad_events*100, "% | ", Ax1_fit_bad_events*100, "%")
+    # print("Ax0_fit_good_events | Ax1_fit_good_events : ", Ax0_fit_good_events*100, "% | ", Ax1_fit_good_events*100, "%")
+    # print("Ax0_fit_bad_events_raining | Ax1_fit_bad_events_raining : ", Ax0_fit_bad_events_raining*100, "% | ", Ax1_fit_bad_events_raining*100, "%")
+    # print("Ax0_fit_bad_events_dirtyAX | Ax1_fit_bad_events_dirtyAX : ", Ax0_fit_bad_events_dirtyAX*100, "% | ", Ax1_fit_bad_events_dirtyAX*100, "%")
+    # print("Ax0_fit_bad_events | Ax1_fit_bad_events : ", Ax0_fit_bad_events*100, "% | ", Ax1_fit_bad_events*100, "%")
 
 
     # fig, (ax0, ax1) = plt.subplots(nrows = 2, figsize =(15, 8))
@@ -88,27 +91,58 @@ def fuzzy_inference_sys(Ax0_peak_densty: float, Ax1_peak_densty: float):
     output_durability_high = np.fmax(durability_high_rule1, durability_high_rule2)
     output_durability_veryhigh = durability_veryhigh_rule1
     output_durability0 = np.zeros_like(y_durability)
-
     
     # outputs of model
     output_durability = np.fmax(np.fmax(np.fmax(np.fmax(output_durability_verylow, output_durability_low), output_durability_mid), output_durability_high), output_durability_veryhigh)
     
     # defuzzification
     defuzzified  = fuzz.defuzz(y_durability, output_durability, 'centroid')
-    print("both_Axle_sensor_durability", defuzzified, "%") 
     result = fuzz.interp_membership(y_durability, output_durability, defuzzified)
-    fig, ax0 = plt.subplots(figsize=(15, 8))
-    ax0.plot(y_durability, durability_verylow, 'r', linewidth = 0.5, linestyle = '--')
-    ax0.plot(y_durability, durability_low, 'g', linewidth = 0.5, linestyle = '--')
-    ax0.plot(y_durability, durability_mid, 'b', linewidth = 0.5, linestyle = '--')
-    ax0.plot(y_durability, durability_high, 'y', linewidth = 0.5, linestyle = '--')
-    ax0.plot(y_durability, durability_veryhigh, 'm', linewidth = 0.5, linestyle = '--')
-    ax0.fill_between(y_durability, output_durability0, output_durability, facecolor = 'Orange', alpha = 0.7)
-    ax0.plot([defuzzified , defuzzified], [0, result], 'k', linewidth = 1.5, alpha = 0.9)
-    ax0.set_title('centroid deffuzification sensor durability')
-    ax0.set_xticks(np.arange(0, 109, step=10))
-    plt.tight_layout()
-    plt.show()
 
 
-fuzzy_inference_sys( float(input("Ax0 dens: ")), float(input("Ax1 dens: ")) )
+    # display situation
+    Ax0_situation_dict= events_situation(dict(
+        Good_events=Ax0_fit_good_events,
+        Raining_events=Ax0_fit_bad_events_raining,
+        Dirty_events=Ax0_fit_bad_events_dirtyAX,
+        Bad_events=Ax0_fit_bad_events
+        ))
+
+    Ax1_situation_dict= events_situation(dict(
+        Good_events=Ax1_fit_good_events,
+        Raining_events=Ax1_fit_bad_events_raining,
+        Dirty_events=Ax1_fit_bad_events_dirtyAX,
+        Bad_events=Ax1_fit_bad_events
+        ))
+
+    output_layer_situation_dict= events_situation(dict(
+        Durability_verylow=max(output_durability_verylow),
+        Durability_low=max(output_durability_low),
+        Durability_mid=max(output_durability_mid),
+        Durability_high=max(output_durability_high),
+        Durability_veryhigh=max(output_durability_veryhigh),
+        ))
+
+    # textstr = '\n'.join((
+    #     "Axle_sensors_durability=%.2f%%" % (defuzzified, ),
+    #     "  Ax0 situation=%s%%" % (Ax0_situation_dict, ),
+    #     "  Ax1 situation=%s%%" % (Ax1_situation_dict, ),
+    #     "  output situation=%s%%" % (output_layer_situation_dict, )))
+
+    # fig, ax0 = plt.subplots(figsize=(15, 8))
+    # ax0.plot(y_durability, durability_verylow, 'r', linewidth = 0.5, linestyle = '--', label = 'verylow')
+    # ax0.plot(y_durability, durability_low, 'g', linewidth = 0.5, linestyle = '--', label = 'low')
+    # ax0.plot(y_durability, durability_mid, 'b', linewidth = 0.5, linestyle = '--', label = 'mid')
+    # ax0.plot(y_durability, durability_high, 'y', linewidth = 0.5, linestyle = '--', label = 'high')
+    # ax0.plot(y_durability, durability_veryhigh, 'm', linewidth = 0.5, linestyle = '--', label = 'veryhigh')
+    # ax0.fill_between(y_durability, output_durability0, output_durability, facecolor = 'Orange', alpha = 0.7)
+    # ax0.plot([defuzzified , defuzzified], [0, result], 'k', linewidth = 1.5, alpha = 0.9)
+    # ax0.legend()
+    # props = dict(boxstyle='round', facecolor='white', alpha=0.5)
+    # ax0.text(0.05 , 0.45, textstr, transform=ax0.transAxes, bbox=props)
+    # ax0.set_title('centroid deffuzification sensor durability')
+    # ax0.set_xticks(np.arange(0, 109, step=10))
+    # plt.tight_layout()
+    # plt.show()
+
+    return [defuzzified, Ax0_situation_dict, Ax1_situation_dict, output_layer_situation_dict]
