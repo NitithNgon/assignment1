@@ -14,6 +14,7 @@ def iterate_event_file(superfolder_path: str, collect_peaks_results_dict: dict[s
         if "event.txt" in os.listdir(current_sub_event_location):
             # print(current_sub_event_location)
             current_sub_event_location=os.path.join(current_sub_event_location, "event.txt")
+            
             flip_axle_cm, path_component_list= read_event_data(current_sub_event_location)
             collect_peaks_results_dict = classify_peaks_bad_events(flip_axle_cm, current_sub_event_location, path_component_list ,collect_peaks_results_dict)
         else:
