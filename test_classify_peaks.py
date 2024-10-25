@@ -1,5 +1,5 @@
 from itertools import zip_longest
-from iterate_event_file import *
+from iterate_event_file import iterate_event_file
 import csv
 
 def dict_to_csv(dictionary, filename):

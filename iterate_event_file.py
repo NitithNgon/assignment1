@@ -1,10 +1,11 @@
 import os
 import numpy as np
 from typing import List
-from read_event_data import *
-from classify_peaks_bad_events import *
+from read_event_data import read_event_data
+from classify_peaks_bad_events import classify_peaks_bad_events
+from read_json import read_json
 
-initial_collect_peaks_results_dict ={"bad_events":[],"bad_events_dirtyAX":[],"bad_events_raining":[],"good_events":[]}
+initial_collect_peaks_results_dict ={"bad_events":[],"bad_events_dirtyAX":[],"bad_events_raining":[],"good_events":[],"velocity":[],"min_widths_wheel_Ax0":[], "max_widths_wheel_Ax0":[], "min_widths_wheel_Ax1":[], "max_widths_wheel_Ax1":[]}
 
 # use recursive function.
 def iterate_event_file(superfolder_path: str, collect_peaks_results_dict: dict[str, List[float]] =initial_collect_peaks_results_dict) -> dict[str, List[float]]:
@@ -13,10 +14,11 @@ def iterate_event_file(superfolder_path: str, collect_peaks_results_dict: dict[s
         current_sub_event_location = os.path.join(superfolder_path, folder)
         if "event.txt" in os.listdir(current_sub_event_location):
             # print(current_sub_event_location)
+            velocity=read_json(current_sub_event_location)
             current_sub_event_location=os.path.join(current_sub_event_location, "event.txt")
-            
             flip_axle_cm, path_component_list= read_event_data(current_sub_event_location)
-            collect_peaks_results_dict = classify_peaks_bad_events(flip_axle_cm, current_sub_event_location, path_component_list ,collect_peaks_results_dict)
+            collect_peaks_results_dict = classify_peaks_bad_events(flip_axle_cm, current_sub_event_location, path_component_list ,collect_peaks_results_dict, velocity)
+            collect_peaks_results_dict["velocity"].append(velocity)
         else:
             iterate_event_file(current_sub_event_location, collect_peaks_results_dict)
     

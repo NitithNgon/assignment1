@@ -1,6 +1,8 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from scipy.signal import find_peaks
+from typing import Optional
+
 from shift_down_bad_events import (
     shift_down_bad_events,
     MIN_RAIN_PROMINENCE
@@ -18,7 +20,14 @@ MAX_WHEEL_WIDTH = 200
 # depend on wheel peak noise
 MIN_WHEEL_PEAK_DISTANCE = 20
 
-def classify_peaks_bad_events_Ax( Ax: np.ndarray, axs: np.ndarray[plt.Axes], axs_num: int) -> int:
+def classify_peaks_bad_events_Ax( Ax: np.ndarray, axs: np.ndarray[plt.Axes], axs_num: int, velocity : Optional[int]) -> tuple[int, Optional[float], Optional[float]]:
+
+    # dinamic variable
+    # if velocity !=None:
+    #     MIN_WHEEL_WIDTH=1
+    #     MAX_WHEEL_WIDTH = 2
+
+
     # plot peak Ax
     axs[axs_num].set_xlabel('time-ms.')
     axs[axs_num].set_ylabel('Axle-cm.')
@@ -45,9 +54,12 @@ def classify_peaks_bad_events_Ax( Ax: np.ndarray, axs: np.ndarray[plt.Axes], axs
                 ymax = Ax[wheel_Ax_peaks], color = "C1")
     axs[axs_num].hlines(y=properties_wheel_bad_event_Ax_peak["width_heights"], xmin=properties_wheel_bad_event_Ax_peak["left_ips"],
                 xmax=properties_wheel_bad_event_Ax_peak["right_ips"], color = "C1")
+    
+    min_widths_wheel, max_widths_wheel = None,None
     try:
         axs[axs_num].hlines(y=properties_wheel_bad_event_Ax_peak["width_heights"].mean() -15, xmin=(properties_wheel_bad_event_Ax_peak["left_ips"])[0],
                     xmax=(properties_wheel_bad_event_Ax_peak["right_ips"])[-1], color = "C3")
+        min_widths_wheel, max_widths_wheel = min(properties_wheel_bad_event_Ax_peak["widths"]) , max(properties_wheel_bad_event_Ax_peak["widths"])
     except :
         pass
     # except Exception as e:
@@ -56,6 +68,6 @@ def classify_peaks_bad_events_Ax( Ax: np.ndarray, axs: np.ndarray[plt.Axes], axs
 
     axs[axs_num].plot(Ax, color = "C0")
 
-    return num_of_bad_event_peaks + num_of_bad_event_above_wheel_peaks
+    return num_of_bad_event_peaks + num_of_bad_event_above_wheel_peaks ,min_widths_wheel, max_widths_wheel
 
 
