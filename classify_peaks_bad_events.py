@@ -43,10 +43,11 @@ def classify_peaks_bad_events(flip_axle_cm: np.ndarray, file_path: str, path_com
         axs[1].set_title("Ax"+axle_cm_name_channel_list[axle_cm_lane_key][1]+" density:"+str(round(bad_event_peaks_density_Ax1, 2))+" E-4")
         collect_peaks_results_dict[event_type].append(bad_event_peaks_density_Ax1)
 
-    if event_type=="bad_events_dirtyAX":
-        collect_peaks_results_dict["min_widths_wheel_Ax0"].append(min_widths_wheel_Ax0), collect_peaks_results_dict["max_widths_wheel_Ax0"].append(max_widths_wheel_Ax0), collect_peaks_results_dict["min_widths_wheel_Ax1"].append(min_widths_wheel_Ax1), collect_peaks_results_dict["max_widths_wheel_Ax1"].append(max_widths_wheel_Ax1)
+    collect_peaks_results_dict["event_type"].append(event_type)
+    collect_peaks_results_dict["min_widths_wheel_Ax0"].append(min_widths_wheel_Ax0), collect_peaks_results_dict["max_widths_wheel_Ax0"].append(max_widths_wheel_Ax0), collect_peaks_results_dict["min_widths_wheel_Ax1"].append(min_widths_wheel_Ax1), collect_peaks_results_dict["max_widths_wheel_Ax1"].append(max_widths_wheel_Ax1)
 
     defuzzified, Ax0_situation_dict, Ax1_situation_dict, output_layer_situation_dict = fuzzy_inference_sys(bad_event_peaks_density_Ax0, bad_event_peaks_density_Ax1)
+    collect_peaks_results_dict["sensors_durability"].append(defuzzified), collect_peaks_results_dict["Ax0_situation_dict"].append(Ax0_situation_dict), collect_peaks_results_dict["Ax1_situation_dict"].append(Ax1_situation_dict), collect_peaks_results_dict["output_layer_situation_dict"].append(output_layer_situation_dict)
     textstr = '\n'.join((
         "Axle_sensors_durability=%.2f%%" % (defuzzified, ),
         "  Ax%s situation=%s%%" % (axle_cm_name_channel_list[axle_cm_lane_key][0], Ax0_situation_dict, ),
@@ -55,9 +56,9 @@ def classify_peaks_bad_events(flip_axle_cm: np.ndarray, file_path: str, path_com
     props = dict(boxstyle='round', facecolor='white', alpha=0.5)
     axs[0].text(0.05 , 0.45, textstr, transform=axs[0].transAxes, bbox=props)
     # plt.show()
-    new_fig_name = f'plotclassif_{event_number}.png'
-    fig.savefig(file_path.replace("event.txt",new_fig_name))
-    fig.savefig(f'classify_peaks_bad_events_Ax_results/{event_type}/{new_fig_name}')
+    # new_fig_name = f'plotclassif_{event_number}.png'
+    # fig.savefig(file_path.replace("event.txt",new_fig_name))
+    # fig.savefig(f'classify_peaks_bad_events_Ax_results/{event_type}/{new_fig_name}')
     plt.close(fig) 
     return collect_peaks_results_dict
 

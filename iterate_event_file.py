@@ -5,7 +5,27 @@ from read_event_data import read_event_data
 from classify_peaks_bad_events import classify_peaks_bad_events
 from read_json import read_json
 
-initial_collect_peaks_results_dict ={"bad_events":[],"bad_events_dirtyAX":[],"bad_events_raining":[],"good_events":[],"velocity":[],"min_widths_wheel_Ax0":[], "max_widths_wheel_Ax0":[], "min_widths_wheel_Ax1":[], "max_widths_wheel_Ax1":[]}
+initial_collect_peaks_results_dict ={"bad_events":[],"bad_events_dirtyAX":[],"bad_events_raining":[],"good_events":[],"min_widths_wheel_Ax0":[], "max_widths_wheel_Ax0":[], "min_widths_wheel_Ax1":[], "max_widths_wheel_Ax1":[],"event_type":[],"sensors_durability":[],"Ax0_situation_dict":[],"Ax1_situation_dict":[],"output_layer_situation_dict":[]}
+initial_collect_json_keys=[
+   "event_tag",
+   "bridge_name",
+   "date_time",
+   "gross_vehicle_weight",
+   "confident",
+   "velocity",
+   "lane",
+   "vehicle_type",
+   "axle_weight",
+   "axle_spacing",
+   "overweight",
+   "overweight_amount",
+   "esal",
+   "lpr_number",
+   "axle_count",
+   "gvw_strain_are",
+   "direction",
+   "type_weight_limit",
+]
 
 # use recursive function.
 def iterate_event_file(superfolder_path: str, collect_peaks_results_dict: dict[str, List[float]] =initial_collect_peaks_results_dict) -> dict[str, List[float]]:
@@ -14,11 +34,21 @@ def iterate_event_file(superfolder_path: str, collect_peaks_results_dict: dict[s
         current_sub_event_location = os.path.join(superfolder_path, folder)
         if "event.txt" in os.listdir(current_sub_event_location):
             # print(current_sub_event_location)
-            velocity=read_json(current_sub_event_location)
+            json_data=read_json(current_sub_event_location)
             current_sub_event_location=os.path.join(current_sub_event_location, "event.txt")
             flip_axle_cm, path_component_list= read_event_data(current_sub_event_location)
+
+            if json_data != None : velocity=json_data["velocity"]
+            else: velocity=None
             collect_peaks_results_dict = classify_peaks_bad_events(flip_axle_cm, current_sub_event_location, path_component_list ,collect_peaks_results_dict, velocity)
-            collect_peaks_results_dict["velocity"].append(velocity)
+            
+            for k in initial_collect_json_keys:
+                if k not in collect_peaks_results_dict:
+                        collect_peaks_results_dict[k] = []  # Initialize an empty dict
+                if json_data != None and k in json_data:
+                    collect_peaks_results_dict[k].append(json_data[k])
+                else:
+                    collect_peaks_results_dict[k].append(None)
         else:
             iterate_event_file(current_sub_event_location, collect_peaks_results_dict)
     
