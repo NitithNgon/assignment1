@@ -5,10 +5,11 @@ from classify_peaks_bad_events_Ax import classify_peaks_bad_events_Ax
 from fuzzy_inference_sys import fuzzy_inference_sys
 from typing import List
 from typing import Optional
+from itertools import chain
 
 def classify_peaks_bad_events(flip_axle_cm: np.ndarray, file_path: str, path_component_list: List[str] , collect_peaks_results_dict: dict[str, List[float]] , velocity : Optional[int]) -> dict[str, List[float]]:
-    min_widths_wheel_Ax0, max_widths_wheel_Ax0, min_widths_wheel_Ax1, max_widths_wheel_Ax1 = None, None, None, None
-    
+    min_widths_wheel_Ax0, max_widths_wheel_Ax0, min_widths_wheel_Ax1, max_widths_wheel_Ax1, widths_wheel_Ax0, widths_wheel_Ax1 = None, None, None, None, None, None
+     
     event_type = path_component_list[0]
     event_number = path_component_list[1]
     data_tag = event_type+" | "+event_number
@@ -26,7 +27,7 @@ def classify_peaks_bad_events(flip_axle_cm: np.ndarray, file_path: str, path_com
         axs[0].set_title("Ax"+axle_cm_name_channel_list[axle_cm_lane_key][0]+" density:"+str(round(bad_event_peaks_density_Ax0, 2))+" E-4")
     else :
         # plot peak Ax0
-        num_of_all_bad_event_peaks_Ax0, min_widths_wheel_Ax0, max_widths_wheel_Ax0 = classify_peaks_bad_events_Ax(Ax0, axs, 0, velocity)
+        num_of_all_bad_event_peaks_Ax0, min_widths_wheel_Ax0, max_widths_wheel_Ax0, widths_wheel_Ax0 = classify_peaks_bad_events_Ax(Ax0, axs, 0, velocity)
         bad_event_peaks_density_Ax0 = num_of_all_bad_event_peaks_Ax0*10000/len(Ax0)
         axs[0].set_title("Ax"+axle_cm_name_channel_list[axle_cm_lane_key][0]+" density:"+str(round(bad_event_peaks_density_Ax0, 2))+" E-4")
         collect_peaks_results_dict[event_type].append(bad_event_peaks_density_Ax0)
@@ -38,14 +39,14 @@ def classify_peaks_bad_events(flip_axle_cm: np.ndarray, file_path: str, path_com
         axs[1].set_title("Ax"+axle_cm_name_channel_list[axle_cm_lane_key][1]+" density:"+str(round(bad_event_peaks_density_Ax1, 2))+" E-4")
     else :
         # plot peak Ax1
-        num_of_all_bad_event_peaks_Ax1, min_widths_wheel_Ax1, max_widths_wheel_Ax1 = classify_peaks_bad_events_Ax(Ax1, axs, 1, velocity)
+        num_of_all_bad_event_peaks_Ax1, min_widths_wheel_Ax1, max_widths_wheel_Ax1, widths_wheel_Ax1 = classify_peaks_bad_events_Ax(Ax1, axs, 1, velocity)
         bad_event_peaks_density_Ax1 = num_of_all_bad_event_peaks_Ax1*10000/len(Ax1)
         axs[1].set_title("Ax"+axle_cm_name_channel_list[axle_cm_lane_key][1]+" density:"+str(round(bad_event_peaks_density_Ax1, 2))+" E-4")
         collect_peaks_results_dict[event_type].append(bad_event_peaks_density_Ax1)
 
     collect_peaks_results_dict["event_type"].append(event_type)
     collect_peaks_results_dict["min_widths_wheel_Ax0"].append(min_widths_wheel_Ax0), collect_peaks_results_dict["max_widths_wheel_Ax0"].append(max_widths_wheel_Ax0), collect_peaks_results_dict["min_widths_wheel_Ax1"].append(min_widths_wheel_Ax1), collect_peaks_results_dict["max_widths_wheel_Ax1"].append(max_widths_wheel_Ax1)
-
+    collect_peaks_results_dict["widths_wheel"].append(list(chain.from_iterable(filter(None, [widths_wheel_Ax0, widths_wheel_Ax1]))))
     defuzzified, Ax0_situation_dict, Ax1_situation_dict, output_layer_situation_dict = fuzzy_inference_sys(bad_event_peaks_density_Ax0, bad_event_peaks_density_Ax1)
     collect_peaks_results_dict["sensors_durability"].append(defuzzified), collect_peaks_results_dict["Ax0_situation_dict"].append(Ax0_situation_dict), collect_peaks_results_dict["Ax1_situation_dict"].append(Ax1_situation_dict), collect_peaks_results_dict["output_layer_situation_dict"].append(output_layer_situation_dict)
     textstr = '\n'.join((

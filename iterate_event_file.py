@@ -5,7 +5,7 @@ from read_event_data import read_event_data
 from classify_peaks_bad_events import classify_peaks_bad_events
 from read_json import read_json
 
-initial_collect_peaks_results_dict ={"bad_events":[],"bad_events_dirtyAX":[],"bad_events_raining":[],"good_events":[],"min_widths_wheel_Ax0":[], "max_widths_wheel_Ax0":[], "min_widths_wheel_Ax1":[], "max_widths_wheel_Ax1":[],"event_type":[],"sensors_durability":[],"Ax0_situation_dict":[],"Ax1_situation_dict":[],"output_layer_situation_dict":[]}
+initial_collect_peaks_results_dict ={"event_number":[],"bad_events":[],"bad_events_dirtyAX":[],"bad_events_raining":[],"good_events":[],"min_widths_wheel_Ax0":[], "max_widths_wheel_Ax0":[], "min_widths_wheel_Ax1":[], "max_widths_wheel_Ax1":[], "widths_wheel":[], "event_type":[],"sensors_durability":[],"Ax0_situation_dict":[],"Ax1_situation_dict":[],"output_layer_situation_dict":[]}
 initial_collect_json_keys=[
    "event_tag",
    "bridge_name",
@@ -37,11 +37,12 @@ def iterate_event_file(superfolder_path: str, collect_peaks_results_dict: dict[s
             json_data=read_json(current_sub_event_location)
             current_sub_event_location=os.path.join(current_sub_event_location, "event.txt")
             flip_axle_cm, path_component_list= read_event_data(current_sub_event_location)
-
+            
             if json_data != None : velocity=json_data["velocity"]
             else: velocity=None
             collect_peaks_results_dict = classify_peaks_bad_events(flip_axle_cm, current_sub_event_location, path_component_list ,collect_peaks_results_dict, velocity)
-            
+
+            collect_peaks_results_dict["event_number"].append(path_component_list[0]+"|"+path_component_list[1])
             for k in initial_collect_json_keys:
                 if k not in collect_peaks_results_dict:
                         collect_peaks_results_dict[k] = []  # Initialize an empty dict
