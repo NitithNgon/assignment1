@@ -5,8 +5,8 @@ from read_event_data import read_event_data
 from classify_peaks_bad_events import classify_peaks_bad_events
 from read_json import read_json
 
-initial_collect_peaks_results_dict ={"event_number":[],"bad_events":[],"bad_events_dirtyAX":[],"bad_events_raining":[],"good_events":[],"min_widths_wheel_Ax0":[], "max_widths_wheel_Ax0":[], "min_widths_wheel_Ax1":[], "max_widths_wheel_Ax1":[], "widths_wheel":[], "event_type":[],"sensors_durability":[],"Ax0_situation_dict":[],"Ax1_situation_dict":[],"output_layer_situation_dict":[]}
-initial_collect_json_keys=[
+initialize_collect_peaks_results_dict ={"event_number":[],"bad_events":[],"bad_events_dirtyAX":[],"bad_events_raining":[],"good_events":[],"min_widths_wheel_Ax0":[], "max_widths_wheel_Ax0":[], "min_widths_wheel_Ax1":[], "max_widths_wheel_Ax1":[], "widths_wheel":[], "event_type":[],"sensors_durability":[],"Ax0_situation_dict":[],"Ax1_situation_dict":[],"output_layer_situation_dict":[]}
+initiallize_collect_json_keys=[
    "event_tag",
    "bridge_name",
    "date_time",
@@ -28,7 +28,7 @@ initial_collect_json_keys=[
 ]
 
 # use recursive function.
-def iterate_event_file(superfolder_path: str, collect_peaks_results_dict: dict[str, List[float]] =initial_collect_peaks_results_dict) -> dict[str, List[float]]:
+def iterate_event_file(superfolder_path: str, collect_peaks_results_dict: dict[str, List[float]] =initialize_collect_peaks_results_dict) -> dict[str, List[float]]:
     # serching event.text directory
     for folder in os.listdir(superfolder_path):
         current_sub_event_location = os.path.join(superfolder_path, folder)
@@ -43,7 +43,7 @@ def iterate_event_file(superfolder_path: str, collect_peaks_results_dict: dict[s
             collect_peaks_results_dict = classify_peaks_bad_events(flip_axle_cm, current_sub_event_location, path_component_list ,collect_peaks_results_dict, velocity)
 
             collect_peaks_results_dict["event_number"].append(path_component_list[0]+"|"+path_component_list[1])
-            for k in initial_collect_json_keys:
+            for k in initiallize_collect_json_keys:
                 if k not in collect_peaks_results_dict:
                         collect_peaks_results_dict[k] = []  # Initialize an empty dict
                 if json_data != None and k in json_data:
