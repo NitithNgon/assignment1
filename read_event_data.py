@@ -1,7 +1,7 @@
 import numpy as np
 from typing import List
 
-def read_event_data( file_path:str ="" ) -> np.ndarray | List[str]:
+def read_event_data( file_path:str) -> np.ndarray | List[str]:
 
     signal_array = np.genfromtxt(file_path, delimiter="\t", skip_header=2, skip_footer=1)
 

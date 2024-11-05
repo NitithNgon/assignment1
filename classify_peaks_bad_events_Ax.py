@@ -20,15 +20,13 @@ MIN_WHEEL_WIDTH = 30
 MAX_WHEEL_WIDTH = 200
 # depend on wheel peak noise
 MIN_WHEEL_PEAK_DISTANCE = 20
+MAX_WHEEL_PEAK_DISTANCE = 100
 
-def classify_peaks_bad_events_Ax( Ax: np.ndarray, axs: np.ndarray[plt.Axes], axs_num: int, velocity : Optional[int]) -> tuple[int, Optional[float], Optional[float], Optional[List[float]]]:
-
-    # dinamic variable
-    # if velocity !=None:
-    #     MIN_WHEEL_WIDTH=1
-    #     MAX_WHEEL_WIDTH = 2
-
-
+def classify_peaks_bad_events_Ax( Ax: np.ndarray, axs: np.ndarray[plt.Axes], axs_num: int, wheel_width_range: List[float]) -> tuple[int, Optional[float], Optional[float], Optional[List[float]]]:
+    wheel_width_range=[MIN_WHEEL_WIDTH,MAX_WHEEL_WIDTH]
+    # if wheel_width_range == None: 
+    #     wheel_width_range=[MIN_WHEEL_WIDTH,MAX_WHEEL_WIDTH]
+    print("wheel_width_range",wheel_width_range)
     # plot peak Ax
     axs[axs_num].set_xlabel('time-ms.')
     axs[axs_num].set_ylabel('Axle-cm.')
@@ -49,7 +47,7 @@ def classify_peaks_bad_events_Ax( Ax: np.ndarray, axs: np.ndarray[plt.Axes], axs
     # print("shift_down_bad_events_above_wheel")
     num_of_bad_event_above_wheel_peaks = shift_down_bad_events(bad_event_above_wheel_Ax_peak, properties_bad_event_above_wheel_Ax_peak, Ax)
 
-    wheel_Ax_peaks, properties_wheel_bad_event_Ax_peak = find_peaks(Ax, prominence=(MIN_WHEEL_PROMINENCE, MAX_WHEEL_PROMINENCE), width=(MIN_WHEEL_WIDTH, MAX_WHEEL_WIDTH), distance=MIN_WHEEL_PEAK_DISTANCE)
+    wheel_Ax_peaks, properties_wheel_bad_event_Ax_peak = find_peaks(Ax, prominence=(MIN_WHEEL_PROMINENCE, MAX_WHEEL_PROMINENCE), width=wheel_width_range, distance=MIN_WHEEL_PEAK_DISTANCE)
     axs[axs_num].plot(wheel_Ax_peaks, Ax[wheel_Ax_peaks], "x", color = "C1")
     axs[axs_num].vlines(x=wheel_Ax_peaks, ymin=Ax[wheel_Ax_peaks] - properties_wheel_bad_event_Ax_peak["prominences"],
                 ymax = Ax[wheel_Ax_peaks], color = "C1")
