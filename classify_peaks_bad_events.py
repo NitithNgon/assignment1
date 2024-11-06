@@ -26,7 +26,7 @@ def classify_peaks_bad_events(flip_axle_cm: np.ndarray, file_path: str, path_com
     wheel_width_sample_range = find_wheel_width_sample(velocity, raw_time_sec, all_sample)
     collect_peaks_results_dict["sensor_sampling_rate"].append(all_sample / raw_time_sec)
     if wheel_width_sample_range != None: 
-        collect_peaks_results_dict["wheel_width_sample"].append(wheel_width_sample_range[0]/0.9)
+        collect_peaks_results_dict["wheel_width_sample"].append(wheel_width_sample_range[0]/0.85)
     else : collect_peaks_results_dict["wheel_width_sample"].append(wheel_width_sample_range)
 
     Ax0=flip_axle_cm[:,0]

@@ -5,8 +5,8 @@ import csv
 def dict_to_csv(dictionary, filename):
     keys = list(dictionary.keys())
     values = list(dictionary.values())
-    print(len(keys))
-    print(len(values))
+    # print(len(keys))
+    # print(len(values))
     with open(filename, 'w', newline='') as csvfile:
         writer = csv.writer(csvfile)
         writer.writerow(keys)
