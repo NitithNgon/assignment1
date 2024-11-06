@@ -13,5 +13,5 @@ def dict_to_csv(dictionary, filename):
         writer.writerows(list(zip_longest(*values,fillvalue="")))
 
 collect_peaks_results_dict = iterate_event_file("to_Peiam")
-print(collect_peaks_results_dict)
+# print(collect_peaks_results_dict)
 dict_to_csv(collect_peaks_results_dict, "collect_peaks_results.csv")

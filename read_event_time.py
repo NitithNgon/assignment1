@@ -13,13 +13,11 @@ def read_event_time( file_path:str ) -> float:
         # first line = {event 1 : left lane outbound, event 2 : right lane outbound)
         event_number = int(lines[0].split('-')[-1])
 
-        event_start_time = lines[1].split('=')[-1]
-        start = datetime.strptime(event_start_time, ' %Y-%m-%d %H:%M:%S-%f\n')
-        event_start_time = event_start_time.strip()
-
-        event_end_time = lines[-1].split('=')[-1]
-        stop = datetime.strptime(event_end_time, ' %Y-%m-%d %H:%M:%S-%f\n')
-        event_end_time = event_end_time.strip()
+        event_start_time = lines[1].split('=')[-1].strip()
+        start = datetime.strptime(event_start_time, '%Y-%m-%d %H:%M:%S-%f')
+  
+        event_end_time = lines[-1].split('=')[-1].strip()
+        stop = datetime.strptime(event_end_time, '%Y-%m-%d %H:%M:%S-%f')
         
    
     timedelta = stop - start
