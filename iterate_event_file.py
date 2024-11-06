@@ -40,8 +40,12 @@ def iterate_event_file(superfolder_path: str, collect_peaks_results_dict: dict[s
             raw_time_sec = read_event_time(current_sub_event_location)
             flip_axle_cm, path_component_list= read_event_data(current_sub_event_location)
             
-            if json_data != None : velocity=json_data["velocity"]
-            else: velocity=None
+            # if json_data != None : 
+            #     velocity=json_data["velocity"]
+            # else: 
+            #     velocity=None
+            velocity = json_data["velocity"] if json_data else None
+            
             collect_peaks_results_dict = classify_peaks_bad_events(flip_axle_cm, current_sub_event_location, path_component_list ,collect_peaks_results_dict, velocity, raw_time_sec)
             collect_peaks_results_dict["event_number"].append(path_component_list[0]+"|"+path_component_list[1])
             for k in initiallize_collect_json_keys:
