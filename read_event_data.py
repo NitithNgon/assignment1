@@ -3,9 +3,9 @@ from typing import List
 
 def read_event_data( file_path:str) -> np.ndarray | List[str]:
 
-    signal_array = np.genfromtxt(file_path, delimiter="\t", skip_header=2, skip_footer=1)
+    signal_array = np.genfromtxt(file_path, delimiter='\t', skip_header=2, skip_footer=1)
 
-    path_component = (file_path.split("\\"))
+    path_component = (file_path.split('\\'))
     event_type = path_component[1]
     event_number = path_component[-2]
     axle_cm_lane_key = event_number[-1]

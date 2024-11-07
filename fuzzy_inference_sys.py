@@ -123,12 +123,12 @@ def fuzzy_inference_sys(Ax0_peak_densty: float, Ax1_peak_densty: float) -> List:
         Durability_veryhigh=max(output_durability_veryhigh),
         ))
 
-    textstr = '\n'.join((
-        "Axle_sensors_durability=%.2f%%" % (defuzzified, ),
-        "  Ax0 situation=%s%%" % (Ax0_situation_dict, ),
-        "  Ax1 situation=%s%%" % (Ax1_situation_dict, ),
-        "  output situation=%s%%" % (output_layer_situation_dict, )))
-
+    # textstr = '\n'.join((
+    #     f"Axle_sensors_durability={defuzzified:.2f}%",
+    #     f"  Ax0 situation={Ax0_situation_dict}%",
+    #     f"  Ax1 situation={Ax1_situation_dict}%",
+    #     f"  output situation={output_layer_situation_dict}%"
+    # ))
     # fig, ax0 = plt.subplots(figsize=(15, 8))
     # ax0.plot(y_durability, durability_verylow, 'r', linewidth = 0.5, linestyle = '--', label = 'verylow')
     # ax0.plot(y_durability, durability_low, 'g', linewidth = 0.5, linestyle = '--', label = 'low')

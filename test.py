@@ -4,12 +4,12 @@ from scipy.stats import norm
 import statistics 
 from scipy.signal import find_peaks
 
-# print("current working directory:", os.getcwd())
+# print('current working directory:', os.getcwd())
 # loop read event
 # c:\users\eei-0\desktop\assignment1\to_Peiam\bad_events_dirtyAX\20240409_085745_4
 # c:\users\eei-0\desktop\assignment1\to_Peiam\bad_events_raining\20240912_023357_1
 # c:\users\eei-0\desktop\assignment1\to_Peiam\bad_events_raining\20240912_022716_2
-event_path = "to_Peiam/bad_events_raining/20240912_022716_2/event.txt"
+event_path = 'to_Peiam/bad_events_raining/20240912_022716_2/event.txt'
 file = open(event_path, 'r')
 
 # cut lines
@@ -17,7 +17,7 @@ lines = file.readlines()
 usedline = lines[2:-1]
 
 used_data = []
-for i in usedline: used_data.append((i.strip()).split("\t"))
+for i in usedline: used_data.append((i.strip()).split('\t'))
 signal_array = np.array(used_data,dtype=float)
 
 
@@ -46,7 +46,7 @@ fig, axs = plt.subplots(2, 1, figsize=(8, 7), gridspec_kw={'height_ratios': [2, 
 
 # plot strain AX
 axs[0].plot(calibrate_full_u_v)
-axs[0].set_title("strain event :2", fontweight="bold")
+axs[0].set_title('strain event :2', fontweight='bold')
 axs[0].set_ylabel('full_u_v')
 axs[0].set_xticklabels([])
 axs[0].legend(list(map(str, full_u_v_exact_channel_list)),bbox_to_anchor=(1.01, 0.75), loc='upper left')
@@ -75,7 +75,7 @@ time_range= [range(0, flip_axle_cm.shape[0])]
 
 # plot one AXle
 selected_show_AX = 1
-axs[1].set_title("Show AX"+str(selected_show_AX+1))
+axs[1].set_title('Show AX'+str(selected_show_AX+1))
 axs[1].scatter(np.transpose(time_range),flip_axle_cm[:,selected_show_AX])
 
 # distribution curve
@@ -83,7 +83,7 @@ normal_distribution = np.sort(flip_axle_cm, axis=0)
 a=normal_distribution[:,selected_show_AX]
 mean = statistics.mean(a[a>5])  # no need to sort
 sd = statistics.stdev(a[a>5])   # no need to sort
-print("mean, SD =",mean,sd)
+print('mean, SD =',mean,sd)
 axs[2].plot(a[a>5] , norm.pdf(a[a>5], mean, sd)) 
 
 # histogram
@@ -103,46 +103,46 @@ fig.tight_layout(pad=2)
 
 # plot peak Ax1
 Ax1=flip_axle_cm[:,0]
-axs[0].plot(Ax1, color = "C0")
-axs[0].set_title("AX1")
+axs[0].plot(Ax1, color = 'C0')
+axs[0].set_title('AX1')
 
 # bad condition
 bad_event_Ax1_peak, properties_bad_event_Ax1_peak = find_peaks(Ax1, prominence=(400, None))
-axs[0].plot(bad_event_Ax1_peak, Ax1[bad_event_Ax1_peak], "x", color = "C2")
+axs[0].plot(bad_event_Ax1_peak, Ax1[bad_event_Ax1_peak], 'x', color = 'C2')
 
 # wheel condition
 wheel_Ax1_peaks, wheel_bad_event_Ax1_peak = find_peaks(Ax1, prominence=(100, None), width=20, distance=30)
-axs[0].plot(wheel_Ax1_peaks, Ax1[wheel_Ax1_peaks], "x", color = "C1")
-axs[0].vlines(x=wheel_Ax1_peaks, ymin=Ax1[wheel_Ax1_peaks] - wheel_bad_event_Ax1_peak["prominences"],
-            ymax = Ax1[wheel_Ax1_peaks], color = "C1")
-axs[0].hlines(y=wheel_bad_event_Ax1_peak["width_heights"], xmin=wheel_bad_event_Ax1_peak["left_ips"],
-            xmax=wheel_bad_event_Ax1_peak["right_ips"], color = "C1")
+axs[0].plot(wheel_Ax1_peaks, Ax1[wheel_Ax1_peaks], 'x', color = 'C1')
+axs[0].vlines(x=wheel_Ax1_peaks, ymin=Ax1[wheel_Ax1_peaks] - wheel_bad_event_Ax1_peak['prominences'],
+            ymax = Ax1[wheel_Ax1_peaks], color = 'C1')
+axs[0].hlines(y=wheel_bad_event_Ax1_peak['width_heights'], xmin=wheel_bad_event_Ax1_peak['left_ips'],
+            xmax=wheel_bad_event_Ax1_peak['right_ips'], color = 'C1')
 try:
-    axs[0].hlines(y=100, xmin=(wheel_bad_event_Ax1_peak["left_ips"])[0],
-                xmax=(wheel_bad_event_Ax1_peak["right_ips"])[-1], color = "C3")
+    axs[0].hlines(y=100, xmin=(wheel_bad_event_Ax1_peak['left_ips'])[0],
+                xmax=(wheel_bad_event_Ax1_peak['right_ips'])[-1], color = 'C3')
 except Exception as e:
     print('Error = ', e)
 
 
 # plot peak Ax2
 Ax2=flip_axle_cm[:,1]
-axs[1].plot(Ax2, color = "C0")
-axs[1].set_title("AX2")
+axs[1].plot(Ax2, color = 'C0')
+axs[1].set_title('AX2')
 
 # bad condition
 bad_event_Ax2_peak, properties_bad_event_Ax2_peak = find_peaks(Ax2, prominence=(400, None))
-axs[1].plot(bad_event_Ax2_peak, Ax2[bad_event_Ax2_peak], "x", color = "C2")
+axs[1].plot(bad_event_Ax2_peak, Ax2[bad_event_Ax2_peak], 'x', color = 'C2')
 
 # wheel condition
 wheel_Ax2_peaks, wheel_bad_event_Ax2_peak = find_peaks(Ax2, prominence=(100, None), width=20, distance=30)
-axs[1].plot(wheel_Ax2_peaks, Ax2[wheel_Ax2_peaks], "x", color = "C1")
-axs[1].vlines(x=wheel_Ax2_peaks, ymin=Ax2[wheel_Ax2_peaks] - wheel_bad_event_Ax2_peak["prominences"],
-            ymax = Ax2[wheel_Ax2_peaks], color = "C1")
-axs[1].hlines(y=wheel_bad_event_Ax2_peak["width_heights"], xmin=wheel_bad_event_Ax2_peak["left_ips"],
-            xmax=wheel_bad_event_Ax2_peak["right_ips"], color = "C1")
+axs[1].plot(wheel_Ax2_peaks, Ax2[wheel_Ax2_peaks], 'x', color = 'C1')
+axs[1].vlines(x=wheel_Ax2_peaks, ymin=Ax2[wheel_Ax2_peaks] - wheel_bad_event_Ax2_peak['prominences'],
+            ymax = Ax2[wheel_Ax2_peaks], color = 'C1')
+axs[1].hlines(y=wheel_bad_event_Ax2_peak['width_heights'], xmin=wheel_bad_event_Ax2_peak['left_ips'],
+            xmax=wheel_bad_event_Ax2_peak['right_ips'], color = 'C1')
 try:
-    axs[1].hlines(y=100, xmin=(wheel_bad_event_Ax2_peak["left_ips"])[0],
-                xmax=(wheel_bad_event_Ax2_peak["right_ips"])[-1], color = "C3")
+    axs[1].hlines(y=100, xmin=(wheel_bad_event_Ax2_peak['left_ips'])[0],
+                xmax=(wheel_bad_event_Ax2_peak['right_ips'])[-1], color = 'C3')
 except Exception as e:
     print('Error = ', e)
 
