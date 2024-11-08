@@ -61,7 +61,7 @@ def iterate_event_file(superfolder_path: str, collect_peaks_results_dict: dict[s
                     if k not in collect_peaks_results_dict:
                         collect_peaks_results_dict[k] = []  # Initialize an empty dict
                     else:
-                        collect_peaks_results_dict[k].extend([None]*(len(collect_peaks_results_dict['event_number'])-collect_peaks_results_dict[k]-1))
+                        collect_peaks_results_dict[k].extend([None]*(len(collect_peaks_results_dict['event_number'])-len(collect_peaks_results_dict[k])-1))
                         collect_peaks_results_dict[k].append(json_data[k])
         else:
             iterate_event_file(current_sub_event_location, collect_peaks_results_dict)
