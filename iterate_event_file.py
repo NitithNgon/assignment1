@@ -1,5 +1,6 @@
 import os
 from typing import List
+from classify_peaks.plot_and_save import save_and_plot_shifted_bad_event_result
 from read_data.read_event import (
     read_event_data,
     read_event_time,
@@ -23,7 +24,8 @@ def iterate_event_file(superfolder_path: str, collect_peaks_results_dict: dict[s
             raw_time_sec = read_event_time(current_sub_event_location)
             flip_axle_cm, path_component_list= read_event_data(current_sub_event_location)
             velocity = json_data['velocity'] if json_data else None          
-            collect_peaks_results_dict = classify_peaks_bad_events(flip_axle_cm, current_sub_event_location, path_component_list ,collect_peaks_results_dict, velocity, raw_time_sec)
+            result_classify_peaks_bad_events, collect_peaks_results_dict = classify_peaks_bad_events(flip_axle_cm, current_sub_event_location, path_component_list ,collect_peaks_results_dict, velocity, raw_time_sec)
+            save_and_plot_shifted_bad_event_result(path_component_list, current_sub_event_location, result_classify_peaks_bad_events)
             set_dict_and_append(collect_peaks_results_dict,'event_number',path_component_list[0]+'|'+path_component_list[1])
             
             if json_data != None:

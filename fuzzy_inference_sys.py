@@ -1,16 +1,15 @@
 import numpy as np
 import skfuzzy as fuzz
 import skfuzzy.membership as mf
-import matplotlib.pyplot as plt
-from typing import List
+from typing import Tuple, Dict
 
-def events_situation(fuzzificaton_dict: dict) -> dict:
+def events_situation(fuzzificaton_dict: Dict) -> Dict:
     filtered_dict = dict(filter(lambda d: d[1]>0, fuzzificaton_dict.items()))
     filtered_dict.update((x, float(round(y*100,2))) for x, y in filtered_dict.items())
     sorted_by_values_dict = dict(sorted(filtered_dict.items(), key=lambda item: item[1] , reverse=True))
     return sorted_by_values_dict
 
-def fuzzy_inference_sys(Ax0_peak_densty: float, Ax1_peak_densty: float) -> List:
+def fuzzy_inference_sys(Ax0_peak_densty: float, Ax1_peak_densty: float) -> Tuple[float, Dict, Dict, Dict]:
     x_peak_densty = np.arange(-10, 2001, 1)
     y_durability = np.arange(0, 109, 1)
 
@@ -145,4 +144,4 @@ def fuzzy_inference_sys(Ax0_peak_densty: float, Ax1_peak_densty: float) -> List:
     # plt.tight_layout()
     # plt.show()
 
-    return [defuzzified, Ax0_situation_dict, Ax1_situation_dict, output_layer_situation_dict]
+    return defuzzified, Ax0_situation_dict, Ax1_situation_dict, output_layer_situation_dict
