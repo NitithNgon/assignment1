@@ -4,7 +4,7 @@ from classify_peaks.calculate_wheel import find_wheel_width_sample
 from classify_peaks.classify_peaks_bad_events_ax import classify_peaks_bad_events_ax
 from classify_peaks.Result_classify_peaks_bad_events_ax import Result_classify_peaks_bad_events_ax
 from classify_peaks.Result_classify_peaks_bad_events import Result_classify_peaks_bad_events
-from fuzzy_inference_sys import fuzzy_inference_sys
+from classify_peaks.fuzzy_inference_sys import fuzzy_inference_sys
 
 from typing import List,Dict
 from typing import Optional
