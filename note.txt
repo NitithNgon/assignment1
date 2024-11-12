@@ -1,0 +1,20 @@
+install mypy
+
+if can not exit pipenv environment
+1 select python interpreter -> outside
+2 run which python to check -> outside
+3 python -m pipenv install mypy (install from out side)
+4 python -m pipenv shell (shell in to)
+5 run pipenv graph to see all installed packages
+6 if not update to date run pipenv install (Installs packages listed in the Pipfile and updates Pipfile.lock as needed.)
+7 exit (to exit virtual environment)
+8 kill terminal
+9 set interpreter back to local environment
+10 new terminal check which python and try import new package
+11 pipenv run pip list (check inside env)
+
+
+The pipenv sync command is used to install the exact packages and versions specified in the Pipfile.lock file. It’s similar to pipenv install but with a key difference:
+
+pipenv install: Installs packages listed in the Pipfile and updates Pipfile.lock as needed. This means it can update packages if they’re not already locked.
+pipenv sync: Ensures your environment matches the exact versions in Pipfile.lock without making any updates. It’s particularly useful when you want a reproducible environment exactly as defined, often for deployment or collaboration purposes.
