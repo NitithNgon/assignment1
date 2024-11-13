@@ -9,7 +9,7 @@ class Result_classify_peaks_bad_events:
         result_classify_peaks_bad_events_ax1 :Result_classify_peaks_bad_events_ax,
         velocity :Optional[int],
         sensor_sampling_rate :float,
-        wheel_width_sample_range :Optional[tuple[float]],
+        wheel_width_sample_range :Optional[tuple[float, float]],
         defuzzified :float,
         ax0_situation_dict :Dict,
         ax1_situation_dict :Dict,

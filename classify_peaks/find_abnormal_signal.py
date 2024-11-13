@@ -2,9 +2,14 @@ import numpy as np
 from math import floor
 from math import ceil
 import numpy as np
-from scipy.signal import find_peaks
-from typing import Optional
-from typing import List, Dict, Tuple
+from scipy.signal import find_peaks # type: ignore
+from numpy.typing import NDArray
+from typing import (
+    List,
+    Dict,
+    Tuple,
+    Optional,
+)
 
 # depend on distance 
 MIN_RAIN_PROMINENCE = 50
@@ -49,7 +54,7 @@ def find_rain_over_wheels(ax: np.ndarray) -> Tuple[np.ndarray, np.ndarray, Dict,
     return  bad_event_above_wheel_ax_peak, y_bad_event_above_wheel_ax_peak, properties_bad_event_above_wheel_ax_peak, num_of_bad_event_above_wheel_peaks
 
 
-def find_wheel_base(ax: np.ndarray, wheel_width_range: Optional[tuple[float]] ) -> Tuple[np.ndarray, np.ndarray, Dict, Optional[float], Optional[float], Optional[List[float]]]:
+def find_wheel_base(ax: np.ndarray, wheel_width_range: Optional[tuple[float, float]] ) -> Tuple[ NDArray[np.float64], NDArray[np.float64], Dict, Optional[float], Optional[float], Optional[List[float]]]:
     # wheel flat peaks
     wheel_width_range = (MIN_WHEEL_WIDTH, MAX_WHEEL_WIDTH) if wheel_width_range is None else wheel_width_range
     wheel_ax_peaks, properties_wheel_bad_event_ax_peak = find_peaks(
@@ -71,7 +76,7 @@ def find_wheel_base(ax: np.ndarray, wheel_width_range: Optional[tuple[float]] ) 
 
 
 
-def shift_down_bad_events(bad_event_peak: Dict, properties_bad_event_peak: Dict, ax: np.ndarray) -> int:
+def shift_down_bad_events(bad_event_peak: NDArray[np.float64], properties_bad_event_peak: Dict[str, NDArray[np.float64]], ax: NDArray[np.float64]) -> int:
     num_of_bad_event_peaks=len(properties_bad_event_peak['width_heights'])
     for i in range(num_of_bad_event_peaks) :
             shift_down_range=ax[floor(properties_bad_event_peak['left_ips'][i]):ceil(properties_bad_event_peak['right_ips'][i])]
@@ -87,5 +92,5 @@ def shift_down_bad_events(bad_event_peak: Dict, properties_bad_event_peak: Dict,
                 #  print('z')
     return num_of_bad_event_peaks
 
-def error_signal_check( ax: np.ndarray) -> bool:
+def error_signal_check( ax: np.ndarray) -> np.bool:
     return np.any(ax[ ax < -10000]) or np.any(ax[ ax > 10000])

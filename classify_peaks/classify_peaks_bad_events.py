@@ -5,12 +5,16 @@ from classify_peaks.classify_peaks_bad_events_ax import classify_peaks_bad_event
 from classify_peaks.Result_classify_peaks_bad_events_ax import Result_classify_peaks_bad_events_ax
 from classify_peaks.Result_classify_peaks_bad_events import Result_classify_peaks_bad_events
 from classify_peaks.fuzzy_inference_sys import fuzzy_inference_sys
-
-from typing import List,Dict
-from typing import Optional
+from typing import (
+    List,
+    Dict,
+    Tuple,
+    Optional,
+    Any,
+)
 from itertools import chain
 
-def classify_peaks_bad_events(flip_axle_cm: np.ndarray, file_path: str, path_component_list: List[str] , collect_peaks_results_dict: Dict[str, List[any]] , velocity: Optional[int], raw_time_sec: float) -> Result_classify_peaks_bad_events | Dict[str, List[any]]:
+def classify_peaks_bad_events(flip_axle_cm: np.ndarray, file_path: str, path_component_list: List[str] , collect_peaks_results_dict: Dict[str, List[Any]] , velocity: Optional[int], raw_time_sec: float) -> Tuple[Result_classify_peaks_bad_events, Dict[str, List[Any]]]:
 
     event_type = path_component_list[0]
 
@@ -18,7 +22,7 @@ def classify_peaks_bad_events(flip_axle_cm: np.ndarray, file_path: str, path_com
     sensor_sampling_rate = all_sample / raw_time_sec
     wheel_width_sample_range = find_wheel_width_sample(velocity, sensor_sampling_rate)
     set_dict_and_append(collect_peaks_results_dict,'sensor_sampling_rate',sensor_sampling_rate)
-    if wheel_width_sample_range != None:
+    if wheel_width_sample_range is not None:
         set_dict_and_append(collect_peaks_results_dict,'wheel_width_sample',wheel_width_sample_range[0]/0.85)
     else : set_dict_and_append(collect_peaks_results_dict,'wheel_width_sample',wheel_width_sample_range)
 
@@ -72,6 +76,6 @@ def classify_peaks_bad_events(flip_axle_cm: np.ndarray, file_path: str, path_com
     return result_classify_peaks_bad_events, collect_peaks_results_dict
 
 
-def set_dict_and_append(collect_peaks_results_dict: dict[str, List[any]], key: str, value: any):
+def set_dict_and_append(collect_peaks_results_dict: Dict[str, List[Any]], key: str, value: Any):
     collect_peaks_results_dict.setdefault(key, []).append(value)
     

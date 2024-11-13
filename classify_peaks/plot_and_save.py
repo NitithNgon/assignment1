@@ -1,6 +1,12 @@
 import numpy as np
 import matplotlib.pyplot as plt
-from typing import List,Dict
+from numpy.typing import NDArray
+from matplotlib.axes import Axes
+from typing import (
+    List,
+    Dict,
+    Any,
+)
 from classify_peaks.Result_classify_peaks_bad_events import Result_classify_peaks_bad_events
 
 def save_and_plot_shifted_bad_event_result(path_component_list: List[str], file_path: str, result_classify_peaks_bad_events: Result_classify_peaks_bad_events):
@@ -15,7 +21,8 @@ def save_and_plot_shifted_bad_event_result(path_component_list: List[str], file_
         '4':['3','4'],
     }
     fig, axes = plt.subplots(2, 1, figsize=(12, 8), gridspec_kw={'height_ratios': [1, 1]})
-    fig.canvas.manager.set_window_title(data_tag)
+    if fig.canvas.manager is not None:
+        fig.canvas.manager.set_window_title(data_tag) 
     fig.tight_layout(pad=3)
     plot_shifted_bad_event_result(axes, 0, axle_cm_name_channel_list, axle_cm_lane_key, result_classify_peaks_bad_events)
     plot_shifted_bad_event_result(axes, 1, axle_cm_name_channel_list, axle_cm_lane_key, result_classify_peaks_bad_events)
@@ -34,7 +41,7 @@ def save_and_plot_shifted_bad_event_result(path_component_list: List[str], file_
     plt.close(fig) 
 
 
-def plot_shifted_bad_event_result(axes: np.ndarray[plt.axes], axs_num: int, axle_cm_name_channel_list: Dict[str,List[str]], axle_cm_lane_key: str, result_classify_peaks_bad_events: Result_classify_peaks_bad_events):
+def plot_shifted_bad_event_result(axes: List[Axes], axs_num: int, axle_cm_name_channel_list: Dict[str,List[str]], axle_cm_lane_key: str, result_classify_peaks_bad_events: Result_classify_peaks_bad_events):
     axs=axes[axs_num]
     result_classify_peaks_bad_events_ax = result_classify_peaks_bad_events.result_classify_peaks_bad_events_ax0 if axs_num==0 else result_classify_peaks_bad_events.result_classify_peaks_bad_events_ax1
 

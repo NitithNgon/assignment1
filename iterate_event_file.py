@@ -1,5 +1,9 @@
 import os
-from typing import List, Dict
+from typing import (
+    List, 
+    Dict,
+    Any,
+)
 from classify_peaks.plot_and_save import save_and_plot_shifted_bad_event_result
 from read_data.read_event import (
     read_event_data,
@@ -12,7 +16,7 @@ from classify_peaks.classify_peaks_bad_events import (
 )
 
 # use recursive function.
-def iterate_event_file(superfolder_path: str, collect_peaks_results_dict: Dict[str, List[any]] ={}) -> Dict[str, List[any]]:
+def iterate_event_file(superfolder_path: str, collect_peaks_results_dict: Dict[str, List[Any]] ={}) -> Dict[str, List[Any]]:
     
     # serching event.text directory
     for folder in os.listdir(superfolder_path):
@@ -28,7 +32,7 @@ def iterate_event_file(superfolder_path: str, collect_peaks_results_dict: Dict[s
             save_and_plot_shifted_bad_event_result(path_component_list, current_sub_event_location, result_classify_peaks_bad_events)
             set_dict_and_append(collect_peaks_results_dict,'event_number',path_component_list[0]+'|'+path_component_list[1])
             
-            if json_data != None:
+            if json_data is not None:
                 for k in json_data.keys():
                     if k not in collect_peaks_results_dict:
                         collect_peaks_results_dict[k] = []  # Initialize an empty dict

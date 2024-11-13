@@ -11,7 +11,7 @@ from classify_peaks.find_abnormal_signal import (
 from classify_peaks.Result_classify_peaks_bad_events_ax import Result_classify_peaks_bad_events_ax
 
 
-def classify_peaks_bad_events_ax( ax: np.ndarray, wheel_width_range: Optional[tuple[float]], all_sample: int) -> Result_classify_peaks_bad_events_ax:
+def classify_peaks_bad_events_ax( ax: np.ndarray, wheel_width_range: Optional[tuple[float, float]], all_sample: int) -> Result_classify_peaks_bad_events_ax:
 
     ax_original = np.copy(ax)
 

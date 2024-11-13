@@ -1,14 +1,20 @@
 import os
 import json
 import numpy as np
+from numpy.typing import NDArray
+from typing import (
+    List,
+    Dict,
+    Optional,
+    Any,
+    Tuple,
+)
 from datetime import (
     datetime,
     # timedelta,
 )
-from typing import List
-from typing import Optional
 
-def read_event_data( file_path:str) -> np.ndarray | List[str]:
+def read_event_data( file_path:str) -> Tuple[ NDArray[np.float64], List[str]]:
 
     signal_array = np.genfromtxt(file_path, delimiter='\t', skip_header=2, skip_footer=1)
 
@@ -46,7 +52,7 @@ def read_event_time( file_path:str ) -> float:
     raw_time = timedelta.seconds + timedelta.microseconds / 1000000
     return raw_time
 
-def read_json(current_sub_event_location: str | os.PathLike) -> Optional[dict]:
+def read_json(current_sub_event_location: str | os.PathLike) -> Optional[Dict]:
     data=None
     for file in os.listdir(current_sub_event_location):
         if file[:4]=='json':

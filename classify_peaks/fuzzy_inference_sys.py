@@ -1,5 +1,5 @@
 import numpy as np
-import skfuzzy as fuzz
+import skfuzzy as fuzz # type: ignore
 import skfuzzy.membership as mf
 from typing import Tuple, Dict
 
