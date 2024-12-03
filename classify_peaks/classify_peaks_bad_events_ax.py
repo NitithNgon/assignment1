@@ -3,12 +3,12 @@ import matplotlib.pyplot as plt
 from typing import Optional
 from typing import List
 
-from classify_peaks.find_abnormal_signal import (
+from classify_peaks.find_abnormal_signal  import (
     find_rain_drop,
     find_rain_over_wheels,
     find_wheel_base,
 )
-from classify_peaks.Result_classify_peaks_bad_events_ax import Result_classify_peaks_bad_events_ax
+from classify_peaks.Result_classify_peaks_bad_events_ax import Result_classify_peaks_bad_events_ax # type: ignore
 
 
 def classify_peaks_bad_events_ax( ax: np.ndarray, wheel_width_range: Optional[tuple[float, float]], all_sample: int) -> Result_classify_peaks_bad_events_ax:
